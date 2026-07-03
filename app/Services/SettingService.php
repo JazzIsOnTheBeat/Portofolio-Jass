@@ -5,9 +5,13 @@ use Illuminate\Support\Facades\Cache;
 
 class SettingService {
     public static function get($key, $default = null) {
-        return Cache::rememberForever('setting_' . $key, function () use ($key, $default) {
-            $setting = SiteSetting::where('key', $key)->first();
-            return $setting ? $setting->value : $default;
+        $settings = Cache::rememberForever('settings_all', function () {
+            return SiteSetting::pluck('value', 'key')->all();
         });
+        return $settings[$key] ?? $default;
+    }
+
+    public static function flush() {
+        Cache::forget('settings_all');
     }
 }

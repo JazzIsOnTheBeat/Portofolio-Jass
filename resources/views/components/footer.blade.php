@@ -50,7 +50,7 @@
         
         <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-text-secondary/30 text-xs font-light">
             <p>&copy; {{ date('Y') }} Jass. All rights reserved.</p>
-            <p class="font-accent text-[10px] uppercase tracking-[0.2em]">Crafted with precision</p>
+            <p class="font-accent text-[10px] uppercase tracking-[0.2em]">Crafted with passion.</p>
         </div>
     </div>
 </footer>

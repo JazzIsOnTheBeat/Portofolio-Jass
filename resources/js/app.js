@@ -28,13 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ─── 0. Loader ───
     const loader = document.getElementById('loader');
     if (loader) {
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                loader.style.opacity = '0';
-                loader.style.pointerEvents = 'none';
-                setTimeout(() => loader.remove(), 700);
-            }, 600);
-        });
+        setTimeout(() => {
+            loader.style.opacity = '0';
+            loader.style.pointerEvents = 'none';
+            setTimeout(() => loader.remove(), 700);
+        }, 800);
     }
 
     // ─── 1. Cursor Glow (desktop only) ───
@@ -248,20 +246,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        let animationFrameId = null;
+        let isVisible = true;
+
         function animateCanvas() {
+            if (!isVisible) return;
             ctx.clearRect(0, 0, width, height);
             for (let i = 0; i < particles.length; i++) {
                 particles[i].update();
                 particles[i].draw();
             }
             drawConnections();
-            requestAnimationFrame(animateCanvas);
+            animationFrameId = requestAnimationFrame(animateCanvas);
         }
 
         initCanvas();
         const particleCount = Math.min(60, Math.floor(width / 25));
         for (let i = 0; i < particleCount; i++) particles.push(new Particle());
-        animateCanvas();
+
+        const heroSection = document.getElementById('home');
+        if (heroSection) {
+            const canvasObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    isVisible = entry.isIntersecting;
+                    if (isVisible) {
+                        animateCanvas();
+                    } else {
+                        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                    }
+                });
+            }, { threshold: 0 });
+            canvasObserver.observe(heroSection);
+        } else {
+            animateCanvas();
+        }
 
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
@@ -329,40 +347,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.3 });
     skillBars.forEach(bar => skillObserver.observe(bar));
 
-    // ─── 9. Testimonial Carousel ───
-    const track = document.querySelector('.testimonial-carousel');
-    const dots = document.querySelectorAll('.carousel-dots button');
-    if (track && dots.length > 0) {
-        let currentIndex = 0;
-        let interval;
-
-        function goToSlide(index) {
-            track.style.transform = `translateX(-${index * 100}%)`;
-            dots.forEach(d => {
-                d.className = 'h-1.5 rounded-full transition-all duration-500 bg-white/10 w-3 hover:bg-white/30';
-            });
-            if (dots[index]) {
-                dots[index].className = 'h-1.5 rounded-full transition-all duration-500 bg-gold-base w-8';
-            }
-            currentIndex = index;
-        }
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                goToSlide(index);
-                resetInterval();
-            });
-        });
-
-        function resetInterval() {
-            clearInterval(interval);
-            interval = setInterval(() => {
-                currentIndex = (currentIndex + 1) % dots.length;
-                goToSlide(currentIndex);
-            }, 6000);
-        }
-        resetInterval();
-    }
 
     // ─── 10. Back to Top ───
     const backToTop = document.getElementById('back-to-top');

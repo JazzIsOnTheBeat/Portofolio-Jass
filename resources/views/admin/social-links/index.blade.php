@@ -74,7 +74,7 @@
                             <span class="text-base text-gold-base w-6 text-center flex-shrink-0">
                                 @php $icon = $link->icon; @endphp
                                 @if(str_starts_with($icon, '<'))
-                                    {!! $icon !!}
+                                    {!! safe_icon($icon) !!}
                                 @elseif(str_starts_with($icon, 'fa-') || str_starts_with($icon, 'bi '))
                                     <i class="{{ $icon }}"></i>
                                 @else

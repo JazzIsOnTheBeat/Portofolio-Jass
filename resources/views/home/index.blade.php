@@ -22,7 +22,7 @@
         <div class="w-36 h-36 mx-auto mb-10 relative group scroll-reveal">
             <div class="absolute -inset-3 rounded-full bg-gradient-to-br from-gold-base/20 via-transparent to-gold-dark/20 opacity-50 group-hover:opacity-100 blur-xl transition-all duration-700"></div>
             <div class="absolute -inset-1 rounded-full bg-gradient-to-br from-gold-base/30 to-gold-dark/10 animate-spin" style="animation-duration: 8s;"></div>
-            <img src="https://ui-avatars.com/api/?name=Jass&background=0E0E12&color=C9A84C&size=256&font-size=0.4" alt="Jass" class="rounded-full w-full h-full object-cover border border-gold-base/20 relative z-10">
+            <div class="rounded-full w-full h-full border border-gold-base/20 relative z-10 flex items-center justify-center bg-brand-secondary text-5xl font-heading font-light text-gradient-gold select-none">J</div>
         </div>
         
         <!-- Overline -->
@@ -237,35 +237,52 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="container mx-auto px-6 relative z-10">
         <x-section-heading title="Featured Projects" subtitle="Selected works that I'm most proud of." />
         
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            @forelse($projects as $project)
-                <div class="tilt-card glass rounded-2xl overflow-hidden group hover-lift scroll-reveal">
+        <div class="flex flex-wrap gap-6" id="projects-container">
+            @forelse($projects as $index => $project)
+                @php
+                    $isHidden = $index >= 5;
+                @endphp
+                <div class="tilt-card glass rounded-2xl flex flex-col group hover-lift flex-grow basis-full md:basis-[calc(50%-2rem)] lg:basis-[calc(33.333%-2rem)] max-w-full {{ $isHidden ? 'hidden extra-project' : 'scroll-reveal' }}">
                     <!-- Image -->
-                    <div class="relative h-52 bg-brand-tertiary overflow-hidden">
+                    <div class="relative h-60 bg-brand-tertiary overflow-hidden rounded-t-2xl flex-shrink-0">
                         @if($project->thumbnail)
-                            <img src="{{ Storage::url($project->thumbnail) }}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" alt="{{ $project->title }}">
+                            <img src="{{ Storage::url($project->thumbnail) }}" loading="lazy" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" alt="{{ $project->title }}">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-text-secondary/30 bg-brand-tertiary font-heading text-3xl italic">{{ $project->title }}</div>
                         @endif
                         <div class="absolute inset-0 bg-gradient-to-t from-brand-primary via-brand-primary/50 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
-                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
-                            <a href="{{ route('projects.show', $project->slug) }}" class="px-8 py-3 bg-gold-base/90 text-brand-primary font-accent text-xs uppercase tracking-[0.15em] font-semibold backdrop-blur-sm hover:bg-gold-base transition-colors">View Detail</a>
-                        </div>
                         <div class="absolute top-4 left-4">
                             <span class="px-3 py-1 text-[10px] font-accent uppercase tracking-[0.15em] bg-brand-primary/60 text-gold-base/80 backdrop-blur-sm border border-gold-base/10">{{ $project->category }}</span>
                         </div>
                     </div>
                     <!-- Content -->
-                    <div class="p-6">
+                    <div class="p-6 flex flex-col flex-grow">
                         <h3 class="text-xl font-heading font-light mb-2 group-hover:text-gold-light transition-colors duration-300">{{ $project->title }}</h3>
-                        <p class="text-sm text-text-secondary font-light leading-relaxed line-clamp-2">{{ $project->description }}</p>
+                        <p class="text-sm text-text-secondary font-light leading-relaxed line-clamp-2 mb-4">{{ $project->description }}</p>
                         @if(is_array($project->tech_stack) && count($project->tech_stack) > 0)
-                        <div class="flex flex-wrap gap-2 mt-4">
-                            @foreach(array_slice($project->tech_stack, 0, 3) as $tech)
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            @foreach(array_slice($project->tech_stack, 0, 4) as $tech)
                             <span class="text-[10px] font-mono text-text-secondary/60 border border-white/5 px-2 py-1 rounded">{{ $tech }}</span>
                             @endforeach
                         </div>
                         @endif
+                        
+                        <div class="mt-auto flex flex-wrap gap-4 pt-4 border-t border-white/5">
+                            @if($project->live_url)
+                            <a href="{{ $project->live_url }}" target="_blank" class="inline-flex items-center gap-2 text-xs font-accent uppercase tracking-wider text-gold-base hover:text-gold-light transition-colors group/link">
+                                <i class="fa-solid fa-globe"></i>
+                                View Site
+                                <i class="fa-solid fa-arrow-right text-[10px] transform group-hover/link:translate-x-1 transition-transform"></i>
+                            </a>
+                            @endif
+                            @if($project->github_url)
+                            <a href="{{ $project->github_url }}" target="_blank" class="inline-flex items-center gap-2 text-xs font-accent uppercase tracking-wider text-text-secondary hover:text-white transition-colors group/link">
+                                <i class="fa-brands fa-github"></i>
+                                View Project
+                                <i class="fa-solid fa-arrow-right text-[10px] transform group-hover/link:translate-x-1 transition-transform"></i>
+                            </a>
+                            @endif
+                        </div>
                     </div>
                 </div>
             @empty
@@ -276,13 +293,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <p class="text-text-secondary/50 text-sm font-light">No projects yet.</p>
                 </div>
             @endforelse
+        </div>
         
-        @if($projects->isNotEmpty())
-        <div class="text-center mt-16 scroll-reveal">
-            <a href="{{ route('projects.index') }}" class="inline-flex items-center gap-3 font-accent text-sm uppercase tracking-[0.15em] text-gold-base hover:text-gold-light transition-colors duration-300 group">
-                <span>View All Projects</span>
-                <svg class="w-4 h-4 transform group-hover:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
+        @if($projects->count() > 5)
+        <div class="text-center mt-12 scroll-reveal">
+            <button id="toggle-projects-btn" class="inline-flex items-center gap-3 font-accent text-sm uppercase tracking-[0.15em] text-gold-base hover:text-gold-light transition-colors duration-300 group">
+                <span id="toggle-projects-text">Show More Projects</span>
+                <i id="toggle-projects-icon" class="fa-solid fa-chevron-down transform transition-transform duration-300"></i>
+            </button>
         </div>
         @endif
     </div>
@@ -367,49 +385,61 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="container mx-auto px-6 relative z-10">
         <x-section-heading title="What People Say" subtitle="Kind words from clients and collaborators." />
         
-        <div class="relative max-w-4xl mx-auto scroll-reveal">
+        <div class="relative mx-auto scroll-reveal">
             @if($testimonials->isNotEmpty())
-            <div class="testimonial-carousel flex transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                @foreach($testimonials as $test)
-                <div class="w-full flex-shrink-0 px-4">
-                    <div class="glass-gold p-10 md:p-14 rounded-3xl text-center relative overflow-hidden">
-                        <!-- Large quote mark -->
-                        <div class="absolute -top-4 left-1/2 -translate-x-1/2 text-8xl text-gold-base/[0.06] font-heading leading-none select-none">"</div>
-                        
-                        <p class="text-lg md:text-2xl font-heading italic leading-relaxed mb-10 relative z-10 font-light text-text-primary/90">
-                            {!! nl2br(e($test->content)) !!}
-                        </p>
-                        
-                        <div class="flex flex-col items-center justify-center gap-4">
+            <div class="flex flex-wrap justify-center gap-6">
+                @foreach($testimonials as $index => $test)
+                @php
+                    $isHidden = $index >= 5;
+                @endphp
+                <div class="w-full md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] {{ $isHidden ? 'hidden extra-testimonial' : '' }}">
+                    <div class="flex items-start gap-3 md:gap-4 mb-2 group hover-lift transition-all duration-300">
+                        <!-- Avatar -->
+                        <div class="flex-shrink-0 mt-1">
                             @if($test->avatar)
-                                <img src="{{ Storage::url($test->avatar) }}" alt="{{ $test->name }}" class="w-14 h-14 rounded-full object-cover border border-gold-base/30">
+                                <img src="{{ Storage::url($test->avatar) }}" alt="{{ $test->name }}" class="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border border-white/10 ring-2 ring-transparent group-hover:ring-gold-base/30 transition-all">
                             @else
-                                <div class="w-14 h-14 rounded-full bg-gold-base/10 border border-gold-base/30 flex items-center justify-center text-xl font-heading text-gold-base">
+                                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-brand-tertiary border border-white/10 flex items-center justify-center text-sm md:text-base font-heading text-text-secondary ring-2 ring-transparent group-hover:ring-gold-base/30 transition-all">
                                     {{ substr($test->name, 0, 1) }}
                                 </div>
                             @endif
-                            
-                            <div>
-                                <h4 class="font-accent font-semibold text-sm uppercase tracking-[0.1em] text-gold-base">{{ $test->name }}</h4>
-                                <div class="text-xs text-text-secondary/60 mt-1">{{ $test->role }} @if($test->company) · {{ $test->company }} @endif</div>
+                        </div>
+
+                        <!-- Chat Content -->
+                        <div class="flex-grow">
+                            <!-- Name and Role -->
+                            <div class="mb-1.5 flex items-end justify-between gap-2">
+                                <div>
+                                    <h4 class="font-accent font-semibold text-xs text-gold-base">{{ $test->name }}</h4>
+                                    <p class="text-[9px] text-text-secondary/50 uppercase tracking-widest mt-0.5">{{ $test->role }} @if($test->company) <span class="mx-1">·</span> {{ $test->company }} @endif</p>
+                                </div>
+                                <!-- Rating -->
+                                <div class="flex gap-0.5 text-gold-base/50 text-[8px] mb-0.5">
+                                    @for($i=0; $i<$test->rating; $i++) <span>★</span> @endfor
+                                    @for($i=$test->rating; $i<5; $i++) <span class="opacity-20">★</span> @endfor
+                                </div>
                             </div>
-                            
-                            <div class="text-gold-base/60 text-xs flex gap-0.5">
-                                @for($i=0; $i<$test->rating; $i++) <span>★</span> @endfor
-                                @for($i=$test->rating; $i<5; $i++) <span class="opacity-20">★</span> @endfor
+
+                            <!-- Chat Bubble -->
+                            <div class="glass p-4 rounded-2xl rounded-tl-sm border border-white/[0.05] group-hover:border-white/10 transition-colors duration-300 relative shadow-lg">
+                                <p class="text-sm font-light leading-relaxed text-text-primary/90">
+                                    {!! nl2br(e($test->content)) !!}
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
                 @endforeach
             </div>
-            
-            <!-- Dots -->
-            <div class="flex justify-center gap-2 mt-10 carousel-dots">
-                @foreach($testimonials as $idx => $test)
-                <button class="h-1.5 rounded-full transition-all duration-500 {{ $idx == 0 ? 'bg-gold-base w-8' : 'bg-white/10 w-3 hover:bg-white/30' }}" data-index="{{ $idx }}"></button>
-                @endforeach
+
+            @if($testimonials->count() > 5)
+            <div class="text-center mt-12 scroll-reveal">
+                <button id="toggle-testimonials-btn" class="inline-flex items-center gap-3 font-accent text-sm uppercase tracking-[0.15em] text-gold-base hover:text-gold-light transition-colors duration-300 group">
+                    <span id="toggle-testimonials-text">Show More Testimonials</span>
+                    <i id="toggle-testimonials-icon" class="fa-solid fa-chevron-down transform transition-transform duration-300"></i>
+                </button>
             </div>
+            @endif
             @else
             <div class="text-center py-20">
                 <div class="w-16 h-16 mx-auto mb-4 rounded-full border border-white/[0.06] flex items-center justify-center text-text-secondary/30">
@@ -468,6 +498,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('toggle-projects-btn');
+        if (toggleBtn) {
+            let isExpanded = false;
+            toggleBtn.addEventListener('click', () => {
+                isExpanded = !isExpanded;
+                document.querySelectorAll('.extra-project').forEach(el => {
+                    if (isExpanded) {
+                        el.classList.remove('hidden');
+                        setTimeout(() => el.classList.add('scroll-reveal', 'revealed'), 10);
+                    } else {
+                        el.classList.add('hidden');
+                        el.classList.remove('revealed');
+                    }
+                });
+                
+                const text = document.getElementById('toggle-projects-text');
+                const icon = document.getElementById('toggle-projects-icon');
+                if (text) text.textContent = isExpanded ? 'Show Less Projects' : 'Show More Projects';
+                if (icon) icon.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+                
+                if (!isExpanded) {
+                    const projectsSection = document.getElementById('projects');
+                    if(projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
+        const toggleTestimonialsBtn = document.getElementById('toggle-testimonials-btn');
+        if (toggleTestimonialsBtn) {
+            let isExpandedTestimonials = false;
+            toggleTestimonialsBtn.addEventListener('click', () => {
+                isExpandedTestimonials = !isExpandedTestimonials;
+                document.querySelectorAll('.extra-testimonial').forEach(el => {
+                    if (isExpandedTestimonials) {
+                        el.classList.remove('hidden');
+                        setTimeout(() => el.classList.add('scroll-reveal', 'revealed'), 10);
+                    } else {
+                        el.classList.add('hidden');
+                        el.classList.remove('revealed');
+                    }
+                });
+                
+                const text = document.getElementById('toggle-testimonials-text');
+                const icon = document.getElementById('toggle-testimonials-icon');
+                if (text) text.textContent = isExpandedTestimonials ? 'Show Less Testimonials' : 'Show More Testimonials';
+                if (icon) icon.style.transform = isExpandedTestimonials ? 'rotate(180deg)' : 'rotate(0deg)';
+                
+                if (!isExpandedTestimonials) {
+                    const testimonialsSection = document.getElementById('testimonials');
+                    if(testimonialsSection) testimonialsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        }
+
         const form = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         
@@ -488,10 +572,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                     const result = await response.json();
                     
+                    if (!response.ok) {
+                        throw new Error(result.message || 'Validation failed');
+                    }
+                    
                     window.showToast(result.message || 'Message sent successfully!', 'success');
                     form.reset();
                 } catch (error) {
-                    window.showToast('An error occurred. Please try again later.', 'error');
+                    window.showToast(error.message || 'An error occurred. Please try again later.', 'error');
                 } finally {
                     submitBtn.disabled = false;
                     submitBtn.querySelector('span').textContent = 'Send Message';

@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller {
     public function index() {
-        $projects = Project::where('status', 'published')->orderBy('sort_order')->take(6)->get();
-        $testimonials = Testimonial::where('status', 'published')->where('is_featured', true)->orderBy('sort_order')->get();
+        $projects = Project::where('status', 'published')->orderBy('sort_order')->get();
+        $testimonials = Testimonial::where('status', 'published')->orderBy('sort_order')->get();
         $skills = Skill::with('category')->orderBy('category_id')->orderBy('sort_order')->get()->groupBy(fn($s) => $s->category?->name ?? 'Other');
         $experiences = Experience::orderBy('start_date', 'desc')->get();
         $educations = Education::orderBy('start_year', 'desc')->get();

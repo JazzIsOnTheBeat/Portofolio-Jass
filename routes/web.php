@@ -1,7 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ResumeController;
 use App\Http\Middleware\TrackPageView;
@@ -20,9 +19,7 @@ use App\Http\Controllers\Admin\AnalyticsController;
 
 Route::middleware([TrackPageView::class])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
-    Route::get('/projects/{slug}', [ProjectController::class, 'show'])->name('projects.show');
-    Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+    Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
     Route::get('/resume/download', [ResumeController::class, 'download'])->name('resume.download');
 });
 
