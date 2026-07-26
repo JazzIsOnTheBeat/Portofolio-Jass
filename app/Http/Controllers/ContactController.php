@@ -16,8 +16,8 @@ class ContactController extends Controller {
         ]);
         $contact = Contact::create($validated);
 
-        Mail::to(config('mail.from.address'))->queue(new ContactReceived($contact));
-        Mail::to($contact->email)->queue(new ContactAutoReply($contact));
+        Mail::to(config('mail.from.address'))->send(new ContactReceived($contact));
+        Mail::to($contact->email)->send(new ContactAutoReply($contact));
 
         if ($request->expectsJson() || $request->ajax()) {
             return response()->json(['success' => true, 'message' => 'Message sent successfully!']);
