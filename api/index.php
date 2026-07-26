@@ -41,6 +41,15 @@ if (isset($_GET['test_connection'])) {
 try {
     require __DIR__ . '/../vendor/autoload.php';
 
+    // Force APP_URL and ASSET_URL dynamically based on Vercel's host header
+    if (isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+        $vercelUrl = 'https://' . $_SERVER['HTTP_X_FORWARDED_HOST'];
+        $_ENV['APP_URL'] = $vercelUrl;
+        $_SERVER['APP_URL'] = $vercelUrl;
+        $_ENV['ASSET_URL'] = $vercelUrl;
+        $_SERVER['ASSET_URL'] = $vercelUrl;
+    }
+    
     // Set paths before bootstrapping the app
     if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL'])) {
         $_ENV['APP_DEBUG'] = 'true';
