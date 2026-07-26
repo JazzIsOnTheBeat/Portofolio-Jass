@@ -43,6 +43,7 @@ try {
 
     // Set paths before bootstrapping the app
     if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL'])) {
+        $_ENV['APP_DEBUG'] = 'true';
         $storagePath = '/tmp/storage';
         $_ENV['APP_SERVICES_CACHE'] = "$storagePath/bootstrap/cache/services.php";
         $_ENV['APP_PACKAGES_CACHE'] = "$storagePath/bootstrap/cache/packages.php";
