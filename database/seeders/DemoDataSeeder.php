@@ -1,6 +1,7 @@
 <?php
 namespace Database\Seeders;
 use Illuminate\Database\Seeder;
+use App\Models\Category;
 use App\Models\Skill;
 use App\Models\Experience;
 use App\Models\Education;
@@ -11,13 +12,18 @@ class DemoDataSeeder extends Seeder
 {
     public function run(): void
     {
+        // Categories
+        $backend = Category::updateOrCreate(['slug' => 'backend'], ['name' => 'Backend', 'sort_order' => 1]);
+        $frontend = Category::updateOrCreate(['slug' => 'frontend'], ['name' => 'Frontend', 'sort_order' => 2]);
+        $aiml = Category::updateOrCreate(['slug' => 'ai-ml'], ['name' => 'AI/ML', 'sort_order' => 3]);
+
         // Skills
         $skills = [
-            ['name' => 'Laravel', 'category' => 'Backend', 'proficiency' => 90],
-            ['name' => 'Python', 'category' => 'AI/ML', 'proficiency' => 85],
-            ['name' => 'TailwindCSS', 'category' => 'Frontend', 'proficiency' => 95],
-            ['name' => 'Vue.js', 'category' => 'Frontend', 'proficiency' => 80],
-            ['name' => 'PyTorch', 'category' => 'AI/ML', 'proficiency' => 70],
+            ['name' => 'Laravel', 'category_id' => $backend->id, 'proficiency' => 90],
+            ['name' => 'Python', 'category_id' => $aiml->id, 'proficiency' => 85],
+            ['name' => 'TailwindCSS', 'category_id' => $frontend->id, 'proficiency' => 95],
+            ['name' => 'Vue.js', 'category_id' => $frontend->id, 'proficiency' => 80],
+            ['name' => 'PyTorch', 'category_id' => $aiml->id, 'proficiency' => 70],
         ];
         foreach ($skills as $skill) { Skill::updateOrCreate(['name' => $skill['name']], $skill); }
 
