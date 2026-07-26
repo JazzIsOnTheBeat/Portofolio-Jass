@@ -1,0 +1,69 @@
+{
+  "_fonts-B3N18_vr.css": {
+    "file": "assets/fonts-B3N18_vr.css",
+    "src": "_fonts-B3N18_vr.css"
+  },
+  "_jetbrains-mono-400-normal-6-qcROiO.woff": {
+    "file": "assets/jetbrains-mono-400-normal-6-qcROiO.woff",
+    "src": "_jetbrains-mono-400-normal-6-qcROiO.woff"
+  },
+  "_jetbrains-mono-400-normal-B9oWc5Lo.woff": {
+    "file": "assets/jetbrains-mono-400-normal-B9oWc5Lo.woff",
+    "src": "_jetbrains-mono-400-normal-B9oWc5Lo.woff"
+  },
+  "_jetbrains-mono-400-normal-BEIGL1Tu.woff2": {
+    "file": "assets/jetbrains-mono-400-normal-BEIGL1Tu.woff2",
+    "src": "_jetbrains-mono-400-normal-BEIGL1Tu.woff2"
+  },
+  "_jetbrains-mono-400-normal-Bc8Ftmh3.woff2": {
+    "file": "assets/jetbrains-mono-400-normal-Bc8Ftmh3.woff2",
+    "src": "_jetbrains-mono-400-normal-Bc8Ftmh3.woff2"
+  },
+  "_jetbrains-mono-400-normal-Bh0R7Dhr.woff": {
+    "file": "assets/jetbrains-mono-400-normal-Bh0R7Dhr.woff",
+    "src": "_jetbrains-mono-400-normal-Bh0R7Dhr.woff"
+  },
+  "_jetbrains-mono-400-normal-ByoDsISC.woff2": {
+    "file": "assets/jetbrains-mono-400-normal-ByoDsISC.woff2",
+    "src": "_jetbrains-mono-400-normal-ByoDsISC.woff2"
+  },
+  "_jetbrains-mono-400-normal-C190GLew.woff2": {
+    "file": "assets/jetbrains-mono-400-normal-C190GLew.woff2",
+    "src": "_jetbrains-mono-400-normal-C190GLew.woff2"
+  },
+  "_jetbrains-mono-400-normal-C_uLvvQ5.woff2": {
+    "file": "assets/jetbrains-mono-400-normal-C_uLvvQ5.woff2",
+    "src": "_jetbrains-mono-400-normal-C_uLvvQ5.woff2"
+  },
+  "_jetbrains-mono-400-normal-CqNFfHCs.woff": {
+    "file": "assets/jetbrains-mono-400-normal-CqNFfHCs.woff",
+    "src": "_jetbrains-mono-400-normal-CqNFfHCs.woff"
+  },
+  "_jetbrains-mono-400-normal-V6pRDFza.woff2": {
+    "file": "assets/jetbrains-mono-400-normal-V6pRDFza.woff2",
+    "src": "_jetbrains-mono-400-normal-V6pRDFza.woff2"
+  },
+  "_jetbrains-mono-400-normal-fXTG6kC5.woff": {
+    "file": "assets/jetbrains-mono-400-normal-fXTG6kC5.woff",
+    "src": "_jetbrains-mono-400-normal-fXTG6kC5.woff"
+  },
+  "_jetbrains-mono-400-normal-ugxPyKxw.woff": {
+    "file": "assets/jetbrains-mono-400-normal-ugxPyKxw.woff",
+    "src": "_jetbrains-mono-400-normal-ugxPyKxw.woff"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-BS1XjZpm.css",
+    "name": "app",
+    "names": [
+      "app.css"
+    ],
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-BUE94wwu.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
