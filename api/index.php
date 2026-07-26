@@ -11,6 +11,33 @@
 // Set the working directory to the project root
 chdir(__DIR__ . '/..');
 
+if (isset($_GET['test_connection'])) {
+    header('Content-Type: text/plain');
+    echo "Testing Database Connection...\n";
+    try {
+        $pdo = new PDO('mysql:host='.$_ENV['DB_HOST'].';port='.$_ENV['DB_PORT'].';dbname='.$_ENV['DB_DATABASE'], $_ENV['DB_USERNAME'], $_ENV['DB_PASSWORD'], [
+            PDO::ATTR_TIMEOUT => 3
+        ]);
+        echo "DB OK\n";
+    } catch (\Exception $e) {
+        echo "DB FAILED: " . $e->getMessage() . "\n";
+    }
+
+    echo "Testing Redis Connection...\n";
+    try {
+        $fp = fsockopen('tls://' . $_ENV['REDIS_HOST'], $_ENV['REDIS_PORT'], $errno, $errstr, 3);
+        if (!$fp) {
+            echo "REDIS FAILED: $errstr ($errno)\n";
+        } else {
+            echo "REDIS OK\n";
+            fclose($fp);
+        }
+    } catch (\Exception $e) {
+        echo "REDIS FAILED: " . $e->getMessage() . "\n";
+    }
+    exit;
+}
+
 try {
     require __DIR__ . '/../vendor/autoload.php';
 
