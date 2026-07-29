@@ -20,7 +20,9 @@ use App\Http\Controllers\Admin\AnalyticsController;
 Route::middleware([TrackPageView::class])->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
-
+    Route::get('/resume/download', function () {
+        return response()->download(public_path('myResume/jasswant-anbumani.pdf'), 'Jass Resume.pdf');
+    })->name('resume.download');
 });
 
 use App\Http\Controllers\Admin\AuthController;
