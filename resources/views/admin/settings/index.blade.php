@@ -57,20 +57,10 @@
             <i class="fa-solid fa-user text-gold-base/60 text-xs"></i>
             About Section
         </h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div>
-                <label class="admin-label">About Text</label>
-                <textarea name="about_text" rows="5"
-                          class="admin-input resize-none">{{ $settings['about_text'] ?? '' }}</textarea>
-            </div>
-            <div>
-                <label class="admin-label">Resume File (PDF)</label>
-                <input type="file" name="resume_file" accept=".pdf"
-                       class="admin-input file:mr-3 file:py-1 file:px-3 file:border-0 file:bg-gold-base/10 file:text-gold-base file:text-[10px] file:font-accent file:uppercase file:tracking-wider hover:file:bg-gold-base/20">
-                @if(isset($settings['resume_path']))
-                    <p class="text-[10px] font-accent uppercase tracking-wider text-text-secondary/40 mt-2">Current file exists. Uploading a new one will replace it.</p>
-                @endif
-            </div>
+        <div>
+            <label class="admin-label">About Text</label>
+            <textarea name="about_text" rows="5"
+                      class="admin-input resize-none">{{ $settings['about_text'] ?? '' }}</textarea>
         </div>
     </div>
 

@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ResumeController extends Controller {
     public function download(Request $request) {
-        $resumePath = \App\Services\SettingService::get('resume_path');
+        $resumePath = public_path('myResume/jasswant-anbumani.pdf');
         
-        if (!$resumePath || !Storage::disk('public')->exists($resumePath)) {
+        if (!file_exists($resumePath)) {
             return redirect()->back()->with('error', 'Resume not available yet.');
         }
 
@@ -17,6 +17,6 @@ class ResumeController extends Controller {
             'user_agent' => $request->userAgent()
         ]);
 
-        return Storage::disk('public')->download($resumePath, 'Jass_Resume.pdf');
+        return response()->download($resumePath, 'jasswant-anbumani.pdf');
     }
 }
