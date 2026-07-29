@@ -42,7 +42,7 @@
         <!-- CTA Buttons -->
         <div class="flex flex-col sm:flex-row gap-5 justify-center items-center scroll-reveal">
             <x-golden-button href="#projects">View My Work</x-golden-button>
-            <a href="{{ route('resume.download') }}" class="magnetic-btn inline-flex items-center gap-3 px-10 py-4 font-accent text-sm uppercase tracking-[0.15em] text-gold-base border border-gold-base/30 hover:border-gold-base/60 hover:bg-gold-base/5 transition-all duration-500 group">
+            <a href="{{ asset('myResume/jasswant-anbumani.pdf') }}" download class="magnetic-btn inline-flex items-center gap-3 px-10 py-4 font-accent text-sm uppercase tracking-[0.15em] text-gold-base border border-gold-base/30 hover:border-gold-base/60 hover:bg-gold-base/5 transition-all duration-500 group">
                 <span>Download CV</span>
                 <svg class="w-4 h-4 transform group-hover:translate-y-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v12m0 0l-4-4m4 4l4-4m-8 8h8"/></svg>
             </a>
